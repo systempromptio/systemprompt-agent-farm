@@ -36,6 +36,7 @@ agent's **system prompt**, passed verbatim.
 | `name` | string | yes | equals the file stem, `^[a-z][a-z0-9_]{2,63}$` |
 | `description` | string | yes | one line, shown in the dashboard |
 | `model` | string | no | model id; falls back to `defaults.model` |
+| `host` | enum | no | agent host that runs the agent: `claude-code` (default when absent), `codex-cli`, `opencode`, `hermes`. Any other value is a sync error naming the agent |
 | `tools` | list[string] | yes, non-empty | Claude Code tool names (`Read`, `Grep`, `Glob`, `Write`, `Edit`, `MultiEdit`, `Bash`, `WebFetch`, `WebSearch`, `TodoWrite`, `NotebookEdit`, `Task`, `Skill`). Becomes `--allowedTools` and the allowlist oracle for `no_tool_outside_allowlist`. `Skill` is always allowed implicitly. |
 | `plugin` | string | yes | plugin id; `plugins/<plugin>/` must exist in this kit |
 | `skills` | list[string] | no | skill ids; each `plugins/<plugin>/skills/<id>/` must exist |

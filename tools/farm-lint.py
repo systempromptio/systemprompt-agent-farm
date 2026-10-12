@@ -23,6 +23,7 @@ FARM_ID_RE = re.compile(r"^[a-z][a-z0-9-]{2,63}$")
 CASE_ID_RE = re.compile(r"^[a-z0-9_]+$")
 TOOLS = {"Read", "Grep", "Glob", "Write", "Edit", "MultiEdit", "Bash", "WebFetch",
          "WebSearch", "TodoWrite", "NotebookEdit", "Task", "Skill"}
+HOSTS = {"claude-code", "codex-cli", "opencode", "hermes"}
 PERMISSION_MODES = {"default", "acceptEdits", "plan", "bypassPermissions"}
 OUTPUT_FORMATS = {"markdown", "json"}
 PLACEHOLDER_RE = re.compile(r"\{\{\s*([^}]*?)\s*\}\}")
@@ -31,7 +32,7 @@ NON_RUST_REGEX = re.compile(r"\(\?[=!<]|\\[1-9]")
 
 FARM_KEYS = {"schema", "id", "marketplace", "defaults", "agents"}
 DEFAULT_KEYS = {"model", "max_turns", "max_budget_usd", "permission_mode"}
-AGENT_KEYS = {"name", "description", "model", "tools", "plugin", "skills", "entry_prompt",
+AGENT_KEYS = {"name", "description", "model", "host", "tools", "plugin", "skills", "entry_prompt",
               "fixture", "max_turns", "max_budget_usd", "permission_mode", "output"}
 AGENT_REQUIRED = {"name", "description", "tools", "plugin", "entry_prompt", "fixture"}
 EVAL_KEYS = {"schema", "agent", "cases"}
@@ -93,6 +94,9 @@ def check_defaults_like(lint, f, data, text, offset=0):
         lint.error(f, "max_turns must be a positive integer", key_line(text, "max_turns", offset))
     if "max_budget_usd" in data and (not is_num(data["max_budget_usd"]) or data["max_budget_usd"] <= 0):
         lint.error(f, "max_budget_usd must be a positive number", key_line(text, "max_budget_usd", offset))
+    if "host" in data and data["host"] not in HOSTS:
+        lint.error(f, f"host {data['host']!r} must be one of {sorted(HOSTS)}",
+                   key_line(text, "host", offset))
     if "permission_mode" in data and data["permission_mode"] not in PERMISSION_MODES:
         lint.error(f, f"permission_mode must be one of {sorted(PERMISSION_MODES)}",
                    key_line(text, "permission_mode", offset))
