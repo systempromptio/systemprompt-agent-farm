@@ -1,0 +1,20 @@
+{
+  "name": "dynapps-agent-farm",
+  "owner": { "name": "Dynapps", "email": "ed@systemprompt.io" },
+  "metadata": {
+    "description": "Dynapps Odoo agent farm: governed delivery skills for Odoo module review, migration planning, release notes and test planning, plus the farm agents that run them unattended",
+    "version": "0.1.0",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "dynapps-odoo-delivery",
+      "source": "./plugins/dynapps-odoo-delivery",
+      "description": "Odoo delivery skills: module review, 16 to 17 migration planning, customer release notes and TransactionCase test plans",
+      "version": "0.1.0",
+      "category": "development",
+      "keywords": ["odoo", "delivery", "review", "migration", "release-notes", "testing"],
+      "license": "proprietary"
+    }
+  ]
+}

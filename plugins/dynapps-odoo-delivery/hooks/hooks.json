@@ -1,0 +1,76 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"${SYSTEMPROMPT_FARM_RUN_ID:-}\" ] || exit 0; if [ -z \"${SYSTEMPROMPT_URL:-}\" ] || [ -z \"${SYSTEMPROMPT_TOKEN:-}\" ]; then echo \"farm run ${SYSTEMPROMPT_FARM_RUN_ID}: SYSTEMPROMPT_URL and SYSTEMPROMPT_TOKEN must both be set\" >&2; exit 1; fi; echo '{\"result\":\"ok\"}'",
+            "async": false
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"${SYSTEMPROMPT_FARM_RUN_ID:-}\" ] || exit 0; INPUT=$(cat); RESP=$(curl -s --max-time 10 -X POST \"${SYSTEMPROMPT_URL}/api/public/hooks/govern?plugin_id=dynapps-odoo-delivery\" -H \"Authorization: Bearer ${SYSTEMPROMPT_TOKEN}\" -H \"Content-Type: application/json\" -d \"$INPUT\" 2>/dev/null); DEC=$(printf %s \"$RESP\" | grep -o '\"decision\" *: *\"[^\"]*\"' | head -1 | sed 's/.*\"\\([^\"]*\\)\"$/\\1/'); if [ \"$DEC\" = \"deny\" ]; then REA=$(printf %s \"$RESP\" | grep -o '\"reason\" *: *\"[^\"]*\"' | head -1 | sed 's/.*\"\\([^\"]*\\)\"$/\\1/'); printf '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"[GOVERNANCE] %s\"}}\\n' \"$REA\"; else echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"allow\"}}'; fi; exit 0",
+            "async": false
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"${SYSTEMPROMPT_FARM_RUN_ID:-}\" ] || exit 0; INPUT=$(cat); RID=\"$SYSTEMPROMPT_FARM_RUN_ID\"; if command -v jq >/dev/null 2>&1; then BODY=$(printf %s \"$INPUT\" | jq -c --arg r \"$RID\" '. + {farm_run_id: $r}' 2>/dev/null); fi; [ -n \"${BODY:-}\" ] || BODY=$(printf %s \"$INPUT\" | sed \"1s/^[[:space:]]*{/{\\\"farm_run_id\\\":\\\"$RID\\\",/\"); ( curl -s --max-time 10 -X POST \"${SYSTEMPROMPT_URL}/api/public/hooks/track?plugin_id=dynapps-odoo-delivery\" -H \"Authorization: Bearer ${SYSTEMPROMPT_TOKEN}\" -H \"Content-Type: application/json\" -d \"$BODY\" >/dev/null 2>&1 & ); exit 0",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"${SYSTEMPROMPT_FARM_RUN_ID:-}\" ] || exit 0; INPUT=$(cat); RID=\"$SYSTEMPROMPT_FARM_RUN_ID\"; if command -v jq >/dev/null 2>&1; then BODY=$(printf %s \"$INPUT\" | jq -c --arg r \"$RID\" '. + {farm_run_id: $r}' 2>/dev/null); fi; [ -n \"${BODY:-}\" ] || BODY=$(printf %s \"$INPUT\" | sed \"1s/^[[:space:]]*{/{\\\"farm_run_id\\\":\\\"$RID\\\",/\"); ( curl -s --max-time 10 -X POST \"${SYSTEMPROMPT_URL}/api/public/hooks/track?plugin_id=dynapps-odoo-delivery\" -H \"Authorization: Bearer ${SYSTEMPROMPT_TOKEN}\" -H \"Content-Type: application/json\" -d \"$BODY\" >/dev/null 2>&1 & ); exit 0",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"${SYSTEMPROMPT_FARM_RUN_ID:-}\" ] || exit 0; INPUT=$(cat); RID=\"$SYSTEMPROMPT_FARM_RUN_ID\"; if command -v jq >/dev/null 2>&1; then BODY=$(printf %s \"$INPUT\" | jq -c --arg r \"$RID\" '. + {farm_run_id: $r}' 2>/dev/null); fi; [ -n \"${BODY:-}\" ] || BODY=$(printf %s \"$INPUT\" | sed \"1s/^[[:space:]]*{/{\\\"farm_run_id\\\":\\\"$RID\\\",/\"); ( curl -s --max-time 10 -X POST \"${SYSTEMPROMPT_URL}/api/public/hooks/track?plugin_id=dynapps-odoo-delivery\" -H \"Authorization: Bearer ${SYSTEMPROMPT_TOKEN}\" -H \"Content-Type: application/json\" -d \"$BODY\" >/dev/null 2>&1 & ); exit 0",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"${SYSTEMPROMPT_FARM_RUN_ID:-}\" ] || exit 0; INPUT=$(cat); RID=\"$SYSTEMPROMPT_FARM_RUN_ID\"; if command -v jq >/dev/null 2>&1; then BODY=$(printf %s \"$INPUT\" | jq -c --arg r \"$RID\" '. + {farm_run_id: $r}' 2>/dev/null); fi; [ -n \"${BODY:-}\" ] || BODY=$(printf %s \"$INPUT\" | sed \"1s/^[[:space:]]*{/{\\\"farm_run_id\\\":\\\"$RID\\\",/\"); ( curl -s --max-time 10 -X POST \"${SYSTEMPROMPT_URL}/api/public/hooks/track?plugin_id=dynapps-odoo-delivery\" -H \"Authorization: Bearer ${SYSTEMPROMPT_TOKEN}\" -H \"Content-Type: application/json\" -d \"$BODY\" >/dev/null 2>&1 & ); exit 0",
+            "async": true
+          }
+        ]
+      }
+    ]
+  }
+}

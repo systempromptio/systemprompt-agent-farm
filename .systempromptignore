@@ -1,0 +1,5 @@
+# Dev-only material that never ships in the services bundle (gitignore syntax).
+# farm/ is fetched by the instance from git, not imported from the bundle.
+farm/
+tools/
+**/*.draft.md

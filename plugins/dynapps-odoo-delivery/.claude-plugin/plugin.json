@@ -1,0 +1,9 @@
+{
+  "name": "dynapps-odoo-delivery",
+  "description": "Odoo delivery skills for Dynapps: module review against ORM and security anti-patterns, 16 to 17 migration planning, customer-facing release notes and TransactionCase test plans.",
+  "version": "0.1.0",
+  "author": { "name": "Dynapps", "email": "ed@systemprompt.io" },
+  "keywords": ["odoo", "delivery", "review", "migration", "release-notes", "testing"],
+  "license": "proprietary",
+  "repository": "https://github.com/systempromptio/systemprompt-agent-farm"
+}

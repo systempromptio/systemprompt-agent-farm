@@ -1,0 +1,16 @@
+# git log --oneline v16.0.0.9.0..HEAD (target release 16.0.1.0.0)
+a1f3c09 feat(maintenance): add "scheduled" state between draft and done
+b72e4d1 feat(mail): email the driver when a maintenance order is scheduled
+c0d9e88 fix(views): overdue orders are highlighted red in the list view
+d4a1b67 chore(deps): bump pre-commit hooks to oca/maintainer-tools 2026.07
+e5c2f10 feat(vehicle): show total maintenance cost on the vehicle form
+f8b3a22 fix(security): multi-company rule so users only see their company's vehicles
+0a7d5e3 refactor(models): extract overdue computation into _compute_is_overdue
+1b6e9f4 test: add creation test for maintenance orders
+2c4f8a1 fix(schedule): block scheduling a second open order for the same vehicle
+3d9a7b5 chore(ci): run tests on Odoo 16.0 nightly image
+4e1c6d2 feat(search): add Overdue filter and group by vehicle
+5f2b0c8 docs: README usage section for fleet managers
+6a8d3e9 fix(onchange): prefill odometer and notes from the selected vehicle
+7b5f1a0 feat(report): cost_report() helper for per-vehicle maintenance cost export
+8c0e2b4 chore: remove unused Python imports

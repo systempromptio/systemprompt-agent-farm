@@ -1,0 +1,9 @@
+# systemprompt sidecar for one plugin; plugin.json carries the rest.
+schema: 1
+plugin:
+  title: "Dynapps — Odoo Delivery"
+  category: development
+  enabled: true
+  mcp_servers:
+    source: explicit
+    include: []

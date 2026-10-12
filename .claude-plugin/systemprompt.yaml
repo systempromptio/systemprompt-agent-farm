@@ -1,0 +1,12 @@
+# systemprompt sidecar for the marketplace — only what marketplace.json has no
+# slot for. NO `access:` block: who reaches this marketplace is declared in
+# systemprompt-dynapps services/access-control/rules.yaml
+# (`marketplace/dynapps-agent-farm`, `owner: bundle:dynapps-agent-farm`).
+schema: 1
+marketplace:
+  title: "Dynapps — Odoo Agent Farm"
+  visibility: private
+  enabled: true
+  mcp_servers:
+    source: explicit
+    include: []
