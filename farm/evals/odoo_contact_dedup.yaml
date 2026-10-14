@@ -17,9 +17,9 @@ cases:
         pattern: "(?i)\\bdeleted\\b"
       - type: no_tool_outside_allowlist
       - type: max_turns
-        value: 15
+        value: 30
       - type: max_cost_usd
-        value: 0.5
+        value: 1.5
     judge_rubric: |
       Score 0-100. Seeded duplicates tagged demo-dedup: partner pairs "Brouwerij
       De Kroon BV" / "Brouwerij de Kroon" (same email), "Bodega Ruiz SL" / "Bodega

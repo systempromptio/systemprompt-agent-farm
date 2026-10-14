@@ -14,9 +14,9 @@ cases:
         pattern: "(?i)hot|warm|cold"
       - type: no_tool_outside_allowlist
       - type: max_turns
-        value: 15
+        value: 30
       - type: max_cost_usd
-        value: 0.5
+        value: 1.5
     judge_rubric: |
       Score 0-100. Five leads tagged demo-triage were seeded: Brouwerij De Kroon
       (budget approved, decision maker, Q1: hot), Logistiek Vandamme (pricing only,

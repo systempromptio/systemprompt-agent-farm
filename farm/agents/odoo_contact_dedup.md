@@ -6,7 +6,7 @@ tools: [Read, Write, mcp__odoo__partner_search, mcp__odoo__partner_get, mcp__odo
 plugin: dynapps-odoo-delivery
 skills: [odoo_contact_dedup]
 fixture: odoo_live
-max_turns: 15
+max_turns: 30
 max_budget_usd: 2.00
 permission_mode: acceptEdits
 output:

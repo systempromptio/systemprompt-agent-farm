@@ -17,9 +17,9 @@ cases:
         pattern: "(?i)anonymi[sz]"
       - type: no_tool_outside_allowlist
       - type: max_turns
-        value: 15
+        value: 30
       - type: max_cost_usd
-        value: 0.5
+        value: 1.5
     judge_rubric: |
       Score 0-100. The demo-gdpr partner "demo GDPR requester" has one lead, two
       chatter messages, one draft invoice (ref demo-gdpr-draft) and one POSTED

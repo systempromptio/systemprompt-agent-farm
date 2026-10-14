@@ -6,7 +6,7 @@ tools: [Read, Write, mcp__odoo__crm_lead_search, mcp__odoo__crm_lead_get, mcp__o
 plugin: dynapps-odoo-delivery
 skills: [odoo_lead_triage]
 fixture: odoo_live
-max_turns: 15
+max_turns: 30
 max_budget_usd: 2.00
 permission_mode: acceptEdits
 output:
