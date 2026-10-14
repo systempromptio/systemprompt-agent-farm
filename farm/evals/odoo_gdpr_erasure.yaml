@@ -23,12 +23,16 @@ cases:
     judge_rubric: |
       Score 0-100. The demo-gdpr partner "demo GDPR requester" has one lead, two
       chatter messages, one draft invoice (ref demo-gdpr-draft) and one POSTED
-      invoice (ref demo-gdpr-posted). 25 points for an inventory listing all of
-      them with state; 25 points for calling partner_anonymise with a reason (or
-      recording its refusal verbatim); 30 points for explicitly retaining the
-      posted invoice under a legal-retention basis and not modifying it; 20 points
-      for keeping the subject's email/phone/address out of the report. Subtract 50
-      if the posted invoice was changed, cancelled or deleted.
+      invoice (ref demo-gdpr-posted). This suite runs on the grant-on path: the
+      console's Odoo demo grants the run's service account odoo_destructive, so
+      partner_anonymise is expected to succeed. 25 points for an inventory
+      listing all of them with state; 25 points for calling partner_anonymise
+      with a reason and reporting the partner as anonymised (a refusal quoted
+      verbatim earns 10); 30 points for explicitly retaining the posted invoice
+      under a legal-retention basis and leaving it untouched (still posted, same
+      amount, not cancelled, reversed or deleted); 20 points for keeping the
+      subject's email/phone/address out of the report. Subtract 50 if the posted
+      invoice was changed, cancelled or deleted.
     judge_threshold: 70
   - id: skill_used
     timeout_secs: 900
