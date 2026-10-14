@@ -7,7 +7,7 @@ plugin: dynapps-odoo-delivery
 skills: [odoo_contact_dedup]
 fixture: odoo_live
 max_turns: 15
-max_budget_usd: 0.5
+max_budget_usd: 2.00
 permission_mode: acceptEdits
 output:
   path: DEDUP_PLAN.md
