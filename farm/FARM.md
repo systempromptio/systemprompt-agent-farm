@@ -37,7 +37,7 @@ agent's **system prompt**, passed verbatim.
 | `description` | string | yes | one line, shown in the dashboard |
 | `model` | string | no | model id; falls back to `defaults.model` |
 | `host` | enum | no | agent host that runs the agent: `claude-code` (default when absent), `codex-cli`, `opencode`, `hermes`. Any other value is a sync error naming the agent |
-| `tools` | list[string] | yes, non-empty | Claude Code tool names (`Read`, `Grep`, `Glob`, `Write`, `Edit`, `MultiEdit`, `Bash`, `WebFetch`, `WebSearch`, `TodoWrite`, `NotebookEdit`, `Task`, `Skill`). Becomes `--allowedTools` and the allowlist oracle for `no_tool_outside_allowlist`. `Skill` is always allowed implicitly. |
+| `tools` | list[string] | yes, non-empty | Claude Code tool names (`Read`, `Grep`, `Glob`, `Write`, `Edit`, `MultiEdit`, `Bash`, `WebFetch`, `WebSearch`, `TodoWrite`, `NotebookEdit`, `Task`, `Skill`). Becomes `--allowedTools` and the allowlist oracle for `no_tool_outside_allowlist`. `Skill` is always allowed implicitly. An entry may also be an MCP tool, `mcp__<server>__<tool>` (or `mcp__<server>` for every tool of that server); `<server>` must be in the agent plugin's `mcp_servers.include`, and the run attaches only those servers. |
 | `plugin` | string | yes | plugin id; `plugins/<plugin>/` must exist in this kit |
 | `skills` | list[string] | no | skill ids; each `plugins/<plugin>/skills/<id>/` must exist |
 | `entry_prompt` | string | yes | the user prompt for a run. Placeholders: `{{fixture_path}}` (absolute workspace root) and `{{case.prompt}}` (the eval case or API caller's prompt; empty string when none) |

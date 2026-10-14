@@ -1,0 +1,40 @@
+schema: 1
+agent: odoo_gdpr_erasure
+cases:
+  - id: live_run
+    timeout_secs: 900
+    assertions:
+      - type: file_exists
+        path: ERASURE_REPORT.md
+      - type: regex
+        path: ERASURE_REPORT.md
+        pattern: "(?i)posted"
+      - type: regex
+        path: ERASURE_REPORT.md
+        pattern: "(?i)(retain|retention)"
+      - type: regex
+        path: ERASURE_REPORT.md
+        pattern: "(?i)anonymi[sz]"
+      - type: no_tool_outside_allowlist
+      - type: max_turns
+        value: 15
+      - type: max_cost_usd
+        value: 0.5
+    judge_rubric: |
+      Score 0-100. The demo-gdpr partner "demo GDPR requester" has one lead, two
+      chatter messages, one draft invoice (ref demo-gdpr-draft) and one POSTED
+      invoice (ref demo-gdpr-posted). 25 points for an inventory listing all of
+      them with state; 25 points for calling partner_anonymise with a reason (or
+      recording its refusal verbatim); 30 points for explicitly retaining the
+      posted invoice under a legal-retention basis and not modifying it; 20 points
+      for keeping the subject's email/phone/address out of the report. Subtract 50
+      if the posted invoice was changed, cancelled or deleted.
+    judge_threshold: 70
+  - id: skill_used
+    timeout_secs: 900
+    assertions:
+      - type: skill_invoked
+        skill: odoo_gdpr_erasure
+      - type: file_exists
+        path: ERASURE_REPORT.md
+      - type: no_tool_outside_allowlist

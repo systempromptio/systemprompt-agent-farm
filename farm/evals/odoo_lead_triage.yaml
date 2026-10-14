@@ -1,0 +1,38 @@
+schema: 1
+agent: odoo_lead_triage
+cases:
+  - id: live_run
+    timeout_secs: 900
+    assertions:
+      - type: file_exists
+        path: TRIAGE.md
+      - type: regex
+        path: TRIAGE.md
+        pattern: "(?i)\\|\\s*lead id"
+      - type: regex
+        path: TRIAGE.md
+        pattern: "(?i)hot|warm|cold"
+      - type: no_tool_outside_allowlist
+      - type: max_turns
+        value: 15
+      - type: max_cost_usd
+        value: 0.5
+    judge_rubric: |
+      Score 0-100. Five leads tagged demo-triage were seeded: Brouwerij De Kroon
+      (budget approved, decision maker, Q1: hot), Logistiek Vandamme (pricing only,
+      no timeline: warm or cold), Bodega Ruiz (demo booked, go-live before summer:
+      hot), Talleres Ortega (no reply to follow-ups: cold), Installaties Peeters
+      (evaluating two vendors, clear need: warm or hot). 15 points per lead present
+      in the table with a defensible temperature and a priority consistent with it
+      (hot=3, warm=2, cold 0-1) and a follow-up date; 25 points for justifications
+      grounded in the lead descriptions. Subtract 20 if any lead outside
+      demo-triage is mentioned as changed, and 20 if a delete was attempted.
+    judge_threshold: 70
+  - id: skill_used
+    timeout_secs: 900
+    assertions:
+      - type: skill_invoked
+        skill: odoo_lead_triage
+      - type: file_exists
+        path: TRIAGE.md
+      - type: no_tool_outside_allowlist

@@ -11,3 +11,6 @@ agents:
   - odoo_migration_planner
   - odoo_release_notes_writer
   - odoo_test_author
+  - odoo_lead_triage
+  - odoo_contact_dedup
+  - odoo_gdpr_erasure
