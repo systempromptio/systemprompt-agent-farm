@@ -1,7 +1,7 @@
 ---
 name: odoo_gdpr_erasure
 description: Handles a GDPR Art. 17 erasure request for the demo-gdpr contact — inventory, anonymise, keep posted invoices, ERASURE_REPORT.md.
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 tools: [Read, Write, mcp__odoo__partner_search, mcp__odoo__partner_get, mcp__odoo__gdpr_erase_inventory, mcp__odoo__partner_anonymise, mcp__odoo__crm_lead_search, mcp__odoo__crm_lead_get, mcp__odoo__note_list, mcp__odoo__invoice_list, mcp__odoo__invoice_get, mcp__odoo__attachment_list]
 plugin: dynapps-odoo-delivery
 skills: [odoo_gdpr_erasure]

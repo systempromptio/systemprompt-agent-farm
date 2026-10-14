@@ -1,7 +1,7 @@
 ---
 name: odoo_contact_dedup
 description: Finds duplicate demo-dedup partners and leads, writes DEDUP_PLAN.md, posts merge notes, deletes (or archives when refused) the redundant records.
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 tools: [Read, Write, mcp__odoo__partner_search, mcp__odoo__partner_get, mcp__odoo__partner_update, mcp__odoo__partner_delete, mcp__odoo__crm_lead_search, mcp__odoo__crm_lead_get, mcp__odoo__crm_lead_update, mcp__odoo__crm_lead_delete, mcp__odoo__note_add, mcp__odoo__note_list]
 plugin: dynapps-odoo-delivery
 skills: [odoo_contact_dedup]
