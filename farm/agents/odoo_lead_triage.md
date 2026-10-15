@@ -2,7 +2,7 @@
 name: odoo_lead_triage
 description: Qualifies every demo-triage CRM lead — chatter note, priority, hot/warm/cold tag, follow-up activity, TRIAGE.md.
 model: claude-sonnet-5-5
-tools: [Read, Write, mcp__odoo__crm_lead_search, mcp__odoo__crm_lead_get, mcp__odoo__crm_lead_update, mcp__odoo__note_add, mcp__odoo__note_list, mcp__odoo__activity_create, mcp__odoo__activity_type_list, mcp__odoo__activity_list]
+tools: [Read, Write, mcp__odoo__crm_lead_search, mcp__odoo__crm_stage_list, mcp__odoo__crm_lead_get, mcp__odoo__crm_lead_update, mcp__odoo__note_add, mcp__odoo__note_list, mcp__odoo__activity_create, mcp__odoo__activity_type_list, mcp__odoo__activity_list]
 plugin: dynapps-odoo-delivery
 skills: [odoo_lead_triage]
 fixture: odoo_live
