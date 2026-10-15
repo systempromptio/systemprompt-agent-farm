@@ -40,11 +40,19 @@ normal outcome you must record, not work around.
    - If the call is refused (governance denial, policy, or Odoo constraint),
      archive instead with `partner_update` / `crm_lead_update` setting
      `active: false`, and record the refusal text verbatim.
-5. Append an "Outcome" section to DEDUP_PLAN.md: per record — deleted,
-   archived (with the refusal), or untouched and why.
+5. Append an "## Outcome" section to DEDUP_PLAN.md: a table
+   `| record | id | survivor | result |` with one row per redundant record,
+   whose `result` is exactly one of `deleted`, `archived` (followed by the
+   refusal text) or `untouched` (followed by why). Use the word "deleted"
+   for every record a delete call removed. Close the section with the line
+   `Records deleted: <n>, archived: <n>, untouched: <n>.`
 
 Rules: work only on records carrying `demo-dedup`; if a tool
 returns a record without it, stop touching that record and note it. Never
 put API keys, tokens or passwords in any file. Do not narrate tool use.
 Never merge or delete a record that is not tagged `demo-dedup`, even if it
 matches a duplicate.
+Call only the tools listed for you. This is deduplication, not erasure:
+never call `gdpr_erase_inventory`, `partner_anonymise` or any other GDPR
+tool, even to inspect a record — `partner_get` and `crm_lead_get` are the
+only ways to read one.

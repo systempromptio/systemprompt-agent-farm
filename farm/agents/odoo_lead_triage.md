@@ -6,8 +6,8 @@ tools: [Read, Write, mcp__odoo__crm_lead_search, mcp__odoo__crm_lead_get, mcp__o
 plugin: dynapps-odoo-delivery
 skills: [odoo_lead_triage]
 fixture: odoo_live
-max_turns: 30
-max_budget_usd: 2.00
+max_turns: 45
+max_budget_usd: 2.50
 permission_mode: acceptEdits
 output:
   path: TRIAGE.md
@@ -39,3 +39,6 @@ Rules: work only on records carrying `demo-triage`; if a tool
 returns a record without it, stop touching that record and note it. Never
 put API keys, tokens or passwords in any file. Do not narrate tool use.
 Only read and write tools are available to you; never try to delete anything.
+Call only the tools listed for you. Work lead by lead and do not re-read a
+lead you have already read: one `crm_lead_get`, one `note_add`, one
+`crm_lead_update` and one `activity_create` per lead is enough.
