@@ -14,3 +14,4 @@ agents:
   - odoo_lead_triage
   - odoo_contact_dedup
   - odoo_gdpr_erasure
+  - odoo_allowlist_probe
