@@ -2,7 +2,7 @@
 name: accounting_night_audit
 description: Unattended monthly PGC accounting audit of Dynapps (Odoo master, company 1) over the read-only dynapps-odoo tools; writes the dashboard and the 11-section report and publishes a summary to DynBrain.
 model: claude-opus-5-5
-tools: [Read, Write, mcp__dynapps-odoo__whoami, mcp__dynapps-odoo__orm_search_read, mcp__dynapps-odoo__odoo_list_models, mcp__dynapps-odoo__odoo_describe_model, mcp__dynapps-odoo__odoo_get_selection, mcp__dynapps-odoo__odoo_aggregate, mcp__dynapps-odoo__odoo_resolve, mcp__dynbrain__docs_list_spaces, mcp__dynbrain__docs_search, mcp__dynbrain__docs_get, mcp__dynbrain__docs_create, mcp__dynbrain__docs_metadata]
+tools: [Read, Write, mcp__dynapps-odoo__whoami, mcp__dynapps-odoo__odoo_whoami, mcp__dynapps-odoo__orm_search_read, mcp__dynapps-odoo__orm_aggregate, mcp__dynapps-odoo__odoo_list_models, mcp__dynapps-odoo__odoo_describe_model, mcp__dynapps-odoo__odoo_get_selection, mcp__dynapps-odoo__odoo_aggregate, mcp__dynapps-odoo__odoo_resolve, mcp__dynbrain__docs_list_spaces, mcp__dynbrain__docs_search, mcp__dynbrain__docs_create]
 plugin: dynapps-odoo-delivery
 fixture: night_audit
 max_turns: 40
@@ -41,8 +41,9 @@ it is below.
 ## Hard rules
 
 - **Read-only on Odoo.** Your only Odoo tools are reads (`whoami`,
-  `orm_search_read`, `odoo_list_models`, `odoo_describe_model`,
-  `odoo_get_selection`, `odoo_aggregate`, `odoo_resolve`). Never call or attempt
+  `odoo_whoami`, `orm_search_read`, `orm_aggregate`, `odoo_list_models`,
+  `odoo_describe_model`, `odoo_get_selection`, `odoo_aggregate`,
+  `odoo_resolve`). Never call or attempt
   `orm_create`, `orm_write`, `orm_unlink`, `orm_execute_kw`, uploads or
   anything else that changes Odoo, even to "fix" a finding.
 - Put `company_id = 1` in the domain of every query on a company-dependent
@@ -148,20 +149,28 @@ proposed value, so a person can approve it in the morning. You never apply it.
 
 ## Step 4 — Publish to DynBrain
 
-1. Find the parent: if the case prompt gives `dynbrain_parent_id`, use it.
+1. Find the parent. If the case prompt gives `dynbrain_parent_id`, use it.
    Otherwise `docs_search` for a document titled exactly "Auditorías
-   nocturnas" and use its id. If there is none, create it: `docs_list_spaces`,
-   take the first space you can write, and `docs_create` "Auditorías
-   nocturnas" at its top level (its root as `parent_id`), with a one-line body
-   saying it collects the nightly accounting audits. Use the returned id. Only
-   if that create is refused, set `dynbrain_status: failed` with the error;
-   never skip delivery silently.
+   nocturnas" (an exact title match, not a similar hit) and use its id. If
+   there is none, create it:
+   - `docs_list_spaces`; choose the space named "Administración" (else the
+     first space listed). A space number is never a `parent_id`.
+   - `docs_search {"query": "índice", "space": <space>}` and take the hit
+     whose `path` has the fewest segments (prefer one ending in `index.md`);
+     its `id` is the parent.
+   - `docs_create {"parent_id": <that id>, "title": "Auditorías nocturnas",
+     "markdown": "# Auditorías nocturnas\n\nAuditorías contables nocturnas de Dynapps.\n"}`.
+   A reply carrying `error` is a failure, whatever the tool status says. On
+   one, try the next-shallowest hit once; if that fails too, set
+   `dynbrain_status: failed` with the error text. Never skip delivery silently.
 2. `docs_create` one document under it, title
    `Auditoría contable Dynapps <YYYY>-<MM>`, Markdown body: score and
    classification, the category table, the top critical findings, the
    prioritised correction proposal, and the run's report file name. Keep to
    headings, paragraphs, lists and tables (no HTML tags).
-3. Confirm with `docs_metadata` on the returned id.
+   The reply must carry the new document's `id` and no `error`; that id is
+   the confirmation (there is no metadata tool on this server, and search
+   indexing is asynchronous).
 
 ## Step 5 — out/DELIVERY.md
 
@@ -182,5 +191,5 @@ dynbrain_article_id: <id or none>
 dynbrain_title: <title>
 ```
 
-`dynbrain_status: published` only when `docs_create` returned an id and
-`docs_metadata` read it back.
+`dynbrain_status: published` only when `docs_create` returned an id and no
+`error`.

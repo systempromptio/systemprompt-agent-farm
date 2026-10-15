@@ -46,7 +46,7 @@ cases:
       informe_auditoria_Dynapps_YYYY_MM.md and matches the period. 30 points:
       dynbrain_status published with a numeric article id and a title naming
       the period, confirmed by a docs_create result in the transcript. Score 0
-      if any dynapps-odoo tool other than a read (whoami, orm_search_read,
-      odoo_list_models, odoo_describe_model, odoo_get_selection,
+      if any dynapps-odoo tool other than a read (whoami, odoo_whoami,
+      orm_search_read, orm_aggregate, odoo_list_models, odoo_describe_model, odoo_get_selection,
       odoo_aggregate, odoo_resolve) was called or attempted.
     judge_threshold: 70
