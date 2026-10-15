@@ -148,10 +148,14 @@ proposed value, so a person can approve it in the morning. You never apply it.
 
 ## Step 4 — Publish to DynBrain
 
-1. Find the parent: if the case prompt gives `dynbrain_parent_id`, use it;
-   otherwise `docs_search` for a document titled "Auditorías nocturnas" and
-   use its id. If neither exists, do not create anywhere else: set
-   `dynbrain_status: skipped` with the reason.
+1. Find the parent: if the case prompt gives `dynbrain_parent_id`, use it.
+   Otherwise `docs_search` for a document titled exactly "Auditorías
+   nocturnas" and use its id. If there is none, create it: `docs_list_spaces`,
+   take the first space you can write, and `docs_create` "Auditorías
+   nocturnas" at its top level (its root as `parent_id`), with a one-line body
+   saying it collects the nightly accounting audits. Use the returned id. Only
+   if that create is refused, set `dynbrain_status: failed` with the error;
+   never skip delivery silently.
 2. `docs_create` one document under it, title
    `Auditoría contable Dynapps <YYYY>-<MM>`, Markdown body: score and
    classification, the category table, the top critical findings, the
@@ -173,7 +177,7 @@ classification: <...>
 report_file: informe_auditoria_Dynapps_<YYYY>_<MM>.md
 sections: 11
 odoo_write_calls: 0
-dynbrain_status: published | skipped | failed
+dynbrain_status: published | failed
 dynbrain_article_id: <id or none>
 dynbrain_title: <title>
 ```
