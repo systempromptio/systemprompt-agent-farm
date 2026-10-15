@@ -6,4 +6,4 @@ plugin:
   enabled: true
   mcp_servers:
     source: explicit
-    include: [odoo]
+    include: [dynapps-odoo, dynbrain]
