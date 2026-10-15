@@ -7,7 +7,7 @@ plugin: dynapps-odoo-delivery
 skills: [odoo_release_notes]
 fixture: dynapps_fleet_maintenance_git
 max_turns: 20
-max_budget_usd: 1.00
+max_budget_usd: 2.00
 permission_mode: acceptEdits
 output:
   path: RELEASE_NOTES.md
