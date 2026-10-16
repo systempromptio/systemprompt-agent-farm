@@ -52,25 +52,54 @@ it is below.
   not available, with the reason.
 - Never put tokens, keys or passwords in any file. Do not narrate tool use.
 
+## Odoo facts on this database (proven by earlier runs; do not rediscover)
+
+Every call below failed in a previous run. Use the working form directly.
+
+- **Lock dates** on `res.company`: `tax_lock_date`, `fiscalyear_lock_date`,
+  `sale_lock_date`, `purchase_lock_date`, `hard_lock_date`. There is **no**
+  `period_lock_date`; asking for it fails the whole read.
+- **Grouping by a date** needs a granularity: `date:month` (or `:quarter`,
+  `:year`). A bare `date` fails. Never put a granularity on a non-date field
+  (`account_id.code:6` fails).
+- **Non-stored computed fields cannot be filtered, grouped or summed**:
+  `account.account.current_balance` and `account.account.group_id` fail.
+  Balances come from `orm_aggregate` on `account.move.line` (`balance:sum`,
+  or `debit:sum`/`credit:sum`) grouped by `account_id`; subgroups come from
+  `account_id.code` prefixes in the domain (`=like`, `"642%"`).
+- **`account.move` has no `move_id`.** Per-move totals: aggregate
+  `account.move.line` grouped by `move_id`.
+- **`account.asset` has no `asset_type`.** Group by `state`; read `name`,
+  `state`, `original_value`, `book_value`, `acquisition_date`,
+  `account_asset_id`, `account_depreciation_id`.
+- **`odoo_aggregate` is refused on `account.move`** on this server. Use
+  `orm_aggregate` (or `orm_search_read`) for moves.
+- For any other model or field you have not used before, call
+  `odoo_describe_model` once first. Never repeat a call that failed: fix the
+  field or drop it and note it as not available.
+
 ## Step 1 — Extraction (10 datasets, through dynapps-odoo)
 
 1. Call `whoami` first. Record the database and user. If the database is not
    `master`, do not audit: write out/DELIVERY.md with `status: aborted` and the
    reason, and stop.
 2. Read, with `orm_search_read` (paged with `limit`/`offset`, only the fields
-   named) or `odoo_aggregate` for sums and counts:
+   named) or `orm_aggregate` for sums and counts:
    1. `account.account`: code, name, account_type, reconcile, tax_ids
    2. `account.move` in the period: name, state, date, move_type, journal_id,
-      partner_id, amount_total
+      partner_id, amount_total (aggregate with `orm_aggregate`, never
+      `odoo_aggregate`)
    3. `account.move.line` in the period: account_id, debit, credit, partner_id,
       reconciled, amount_residual, tax_ids, date, move_id. Prefer
-      `odoo_aggregate` grouped by account for balances and per-move
+      `orm_aggregate` grouped by account for balances and per-move
       debit/credit totals; read lines individually only where a check needs
       rows (43x/40x without partner, 572 open items, 700000/705000).
    4. `account.journal`: type, default_account_id, code
    5. `account.bank.statement`: state, date, balance_end_real, journal_id
-   6. `res.company` id 1: name, period lock date, tax lock date, fiscal year
-      lock date (discover exact field names with `odoo_describe_model`)
+   6. `res.company` id 1: name, vat, `tax_lock_date`,
+      `fiscalyear_lock_date`, `sale_lock_date`, `purchase_lock_date`,
+      `hard_lock_date` (the "period lock" of the checks is the latest of the
+      sale/purchase/fiscal-year locks)
    7. `res.partner` that appear on the period's invoices: vat, country_id
    8. `ir.module.module` named `l10n_es%`: name, state
    9. `account.asset` (may not exist: check `odoo_list_models`; if missing,
