@@ -3,7 +3,7 @@
   "owner": { "name": "Dynapps", "email": "ed@systemprompt.io" },
   "metadata": {
     "description": "Dynapps Odoo agent farm: governed delivery skills for Odoo module review, migration planning, release notes and test planning, plus the farm agents that run them unattended",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "pluginRoot": "./plugins"
   },
   "plugins": [
